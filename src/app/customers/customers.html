@@ -1,26 +1,69 @@
 <div>
-    <div class="card m-3 mx-5">
-        <div class="card-header">
-            Customers
-        </div>
-        <div class="card-body ">
-            <table class="table">
-                <thead >
-                    <tr>
-                        <th>Id</th> <th>Name</th> <th>Email</th>
-                    </tr>
-                </thead >
-                <tbody >
-                    @for (customer of customers(); track customer.id ){
-                        <tr>
-                            <td> {{customer.id}} </td>
-                            <td> {{customer.name}} </td>
-                            <td> {{customer.email}} </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+    <div>
+        <ng-container>
+            @if (customers() | async; as listCustomers){
+                <div class="card m-3 mx-5">
+                <div class="card-header">
+                    Customers
+                </div>
+                <div class="card-body ">
+                    <div>
+                        {{searchFormGroup.value | json}}
+                    </div>
+                    <form  [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCustomers()">
+                        <div class="input-group">
+                            <label class="input-group-text">Keyword : </label>
+                            <input type="text" formControlName="keyword" class="form-control">
+                            <button class="btn btn-info"> 
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <table class="table">
+                        <thead >
+                            <tr>
+                                <th>Id</th> <th>Name</th> <th>Email</th>
+                            </tr>
+                        </thead >
+                        <tbody >
+                            @for (customer of listCustomers; track customer.id ){
+                                <tr>
+                                    <td> {{customer.id}} </td>
+                                    <td> {{customer.name}} </td>
+                                    <td> {{customer.email}} </td>
+                                    </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            }@else if (errorMessage()) {
+                <div class="text-danger mx-3">
+                    {{errorMessage()}}
+                </div>
+            }@else {
+                <div>
+                    loading ...
+                </div>
+            }
+        </ng-container>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
     </div>
-</div>
+</div> 
