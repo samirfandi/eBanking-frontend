@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Customer } from '../services/customer';
 import { JsonPipe } from '@angular/common';
 import { CustomerModel } from '../models/customer';
@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './customers.html',
 })
 export class Customers implements OnInit{
+
 
 
   private customers = signal<Observable<Array<CustomerModel>> | undefined>(undefined);
@@ -60,6 +61,25 @@ export class Customers implements OnInit{
     );
 
   }
+
+
+  handleDeleteCustomer(customer: CustomerModel) {
+
+  this.customerService.deleteCustomer(customer.id).subscribe({
+    next: () => {
+
+      alert(`Customer ${customer.id} deleted successfully!`);
+
+      this.customers.update(customers$ =>
+        customers$?.pipe(
+        map(data => data.filter(c => c.id !== customer.id))
+        ));
+    },
+    error: err => {
+      console.error(err);
+    }
+  });
+}
 
 
 
