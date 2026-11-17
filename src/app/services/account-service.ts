@@ -14,6 +14,35 @@ export class AccountService {
     return this.http.get<accountDetailsModel>(
       `${environment.backendHost}/accounts/${accountId}/operationsPage?page=${page}&size=${size}`);
   }
+
+  public debit(accountId: string, amount: number, description: string){
+
+    let data = {
+        "accountId": accountId,
+        "amount":  amount,
+        "description": description
+    }
+    return this.http.post(environment.backendHost + "/accounts/debit", data);
+  }
+
+  public credit(accountId: string, amount: number, description: string){
+
+    let data = {
+        "accountId": accountId,
+        "amount":  amount,
+        "description": description
+    }
+    return this.http.post(environment.backendHost + "/accounts/credit", data);
+  }
+
+  public transfer(accountSource: string,accoundDestination: string, amount: number, description: string){
+
+    let data = {"accounSource": accountSource,
+        "accounDestination": accoundDestination,
+         "amount": amount,
+         "description": description
+        }
+    return this.http.post(environment.backendHost + "/accounts/transfer", data);
+  }
 }
 
-// http://localhost:8085/accounts/16371740-fac8-40f1-93ee-e4d56bf853d5/operationsPage?size=4
