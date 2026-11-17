@@ -1,3 +1,4 @@
+<!--
 <div class="container  mt-3">
     <div class="card col-md-6 offset-3">
         <div class="card-header"> New Customer's informations</div>
@@ -49,5 +50,118 @@
 
 
     </div>
+</div>
+-->
 
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card customer-card border-0">
+        <!-- Card Header -->
+        <div class="card-header customer-header">
+            <h5 class="mb-0">
+                <i class="bi bi-person-plus me-2"></i>
+                New Customer
+            </h5>
+        </div>  
+        <!-- Card Body -->
+        <div class="card-body p-4 p-md-5">
+          <form [formGroup]="newCustomerFormGroup"
+                (ngSubmit)="handleSaveCustomer()">
+            <!-- Name -->
+            <div class="mb-4">
+              <label for="name" class="form-label">
+                Full Name
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-person"></i>
+                </span>
+                <input
+                  id="name"
+                  type="text"
+                  formControlName="name"
+                  class="form-control"
+                  placeholder="Enter customer's name"
+                  [class.is-invalid]="newCustomerFormGroup.controls['name'].touched &&
+                                      newCustomerFormGroup.controls['name'].invalid"
+                >
+              </div>
+
+              @if (newCustomerFormGroup.controls['name'].touched) {
+                @if (newCustomerFormGroup.controls['name'].hasError('required')) {
+                  <div class="invalid-feedback d-block">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    Name is required.
+                  </div>
+                }
+                @else if (newCustomerFormGroup.controls['name'].hasError('minlength')) {
+                  <div class="invalid-feedback d-block">
+                    Name must contain at least 3 characters.
+                  </div>
+                }
+                @else if (newCustomerFormGroup.controls['name'].hasError('pattern')) {
+                  <div class="invalid-feedback d-block">
+                    Name contains invalid characters.
+                  </div>
+                }
+              }
+            </div>
+            <!-- Email -->
+            <div class="mb-4">
+              <label for="email" class="form-label">
+                Email Address
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-envelope"></i>
+                </span>
+                <input
+                  id="email"
+                  type="email"
+                  formControlName="email"
+                  class="form-control"
+                  placeholder="example@email.com"
+                  [class.is-invalid]="newCustomerFormGroup.controls['email'].touched &&
+                                      newCustomerFormGroup.controls['email'].invalid"
+                >
+              </div>
+
+              @if (newCustomerFormGroup.controls['email'].touched) {
+                @if (newCustomerFormGroup.controls['email'].hasError('required')) {
+                  <div class="invalid-feedback d-block">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    Email is required.
+                  </div>
+                }
+                @else if (newCustomerFormGroup.controls['email'].hasError('email')) {
+                  <div class="invalid-feedback d-block">
+                    Please enter a valid email address.
+                  </div>
+                }
+              }
+            </div>
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+              <button
+                type="submit"
+                class="btn btn-success btn-lg"
+                [disabled]="newCustomerFormGroup.invalid">
+                <i class="bi bi-person-plus me-2"></i>
+                Create Customer
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- Card Footer -->
+        <div class="card-footer text-center py-3">
+          <small>
+            <i class="bi bi-shield-check me-1"></i>
+            Customer information is securely managed.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
