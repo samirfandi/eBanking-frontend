@@ -128,11 +128,58 @@
             </div>
         </div>
         <!--2nd part-->
-        <div class="col col-md-6">
-            gg
+        @if (accountDetailsObservable()) {
+             <div class="col col-md-6">
+            <div class="card border-0 shadow-sm mb-3" >
+                <div class="card-header">
+                    Operation
+                </div>
+                <div class="card-body">
+                    <form class="form" [formGroup]="operationFormGroup" (ngSubmit)="handleAccountOperation()" method="post">
+                        <!-- Type of operation-->
+                        <div class="form-check form-check-inline" >
+                            <input type="radio" class="form-check-input" formControlName="operationType" value="DEBIT">
+                            <label class="form-check-label"> DEBIT</label>
+                        </div>
+                        <div class="form-check form-check-inline" >
+                            <input type="radio" class="form-check-input" formControlName="operationType" value="CREDIT">
+                            <label class="form-check-label"> CREDIT</label>
+                        </div>
+                        <div class="form-check form-check-inline" >
+                            <input type="radio" class="form-check-input" formControlName="operationType" value="TRANSFER">
+                            <label class="form-check-label"> TRANSFER</label>
+                        </div>
+                        <!--Account Destination if TRANSFER-->
+                        @if (operationFormGroup.value.operationType ==="TRANSFER") {
+                             <div class="mb-3 mt-3">
+                            <label class="form-label"> Account Destination :</label>
+                            <input type="text" formControlName="accoundDestination" class="form-control" placeholder="add account id">
+                        </div>
+                        }
+                        <!-- Amount -->
+                        <div class="mb-3">
+                            <label class="form-label"> Amount :</label>
+                            <input type="text" formControlName="amount" class="form-control" placeholder="give the amount">
+                        </div>
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label class="form-label"> Description :</label>
+                            <input type="text" formControlName="description" class="form-control" placeholder="description ...">
+                        </div>
+                        <!-- Submit button -->
+                        <div class="mb-3 d-grid">
+                            <button type="submit"  class="btn btn-success"> Save operation </button>
+                        </div>
+
+
+                    </form>
+                    <!-- Test-->
+                     {{operationFormGroup.value | json}}
+                </div>
+            </div>
         </div>
-
-
+        }
+       
     </div>
     
 
