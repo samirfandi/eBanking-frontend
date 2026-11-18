@@ -6,6 +6,7 @@ import { JsonPipe } from '@angular/common';
 import { CustomerModel } from '../models/customer';
 import { AsyncPipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Route, Router } from '@angular/router';
 
 @Component({
   imports: [JsonPipe, AsyncPipe, ReactiveFormsModule],
@@ -17,12 +18,13 @@ export class Customers implements OnInit{
 
 
 
+
   private customers = signal<Observable<Array<CustomerModel>> | undefined>(undefined);
   private http = inject(HttpClient);
   private errorMessage = signal<string | undefined >(undefined);
   private searchFormGroup! : FormGroup ;
 
-  constructor(private customerService : Customer, private fb : FormBuilder){}
+  constructor(private customerService : Customer, private fb : FormBuilder, private router: Router){}
 
   
 
@@ -79,7 +81,13 @@ export class Customers implements OnInit{
       console.error(err);
     }
   });
-}
+  }
+
+  handleCustomerAccounts(customer: CustomerModel) {
+
+    this.router.navigateByUrl("customerAccounts/"+customer.id, {state: {customer}});
+    
+  }
 
 
 
