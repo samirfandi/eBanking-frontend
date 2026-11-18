@@ -3,6 +3,7 @@ import { inject, Service, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { Observable } from 'rxjs';
 import { accountDetailsModel } from '../models/accountDetailsModel';
+import { AccountModel } from '../models/accountModel';
 
 @Service()
 export class AccountService {
@@ -44,5 +45,13 @@ export class AccountService {
         }
     return this.http.post(environment.backendHost + "/accounts/transfer", data);
   }
+
+  public customerAccounts(customerId: string): Observable<Array<AccountModel>>{
+
+    return this.http.get<Array<AccountModel>>(environment.backendHost + "/accounts/customer/"+customerId);
+  }
+
+
+
 }
 
