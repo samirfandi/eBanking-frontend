@@ -18,7 +18,10 @@
                             </button>
                         </div>
                     </form>
-                    <!--Account operations-->
+
+                    <!-- if submitted-->
+                     @if (submitted()) {
+                        <!--Account operations-->
                     @if (accountDetailsObservable() | async; as accountDetails) {
 
                     <!-- Account Information -->
@@ -123,7 +126,19 @@
                     </div>
 
                     </div>
+                    }@else if(accountError()){
+                        <div class="text-danger ms-4">
+                            {{accountError()}}
+                        </div>
+                    }@else {
+                        <div class="text-success ms-4">
+                            Loading ...
+                        </div>
                     }
+
+
+                     }
+                    
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { accountDetailsModel } from '../models/accountDetailsModel';
 import { AccountService } from '../services/account-service';
 import { AsyncPipe, DecimalPipe, DatePipe, JsonPipe } from '@angular/common';
@@ -24,6 +24,10 @@ export class Accounts implements OnInit{
   private accountDetailsObservable =
   signal<Observable<accountDetailsModel> |undefined>(undefined);
 
+  private accountError = signal<string | undefined>(undefined);
+
+  private submitted = signal<boolean>(false);
+
   constructor(private fb: FormBuilder, private accountService: AccountService){}
 
 
@@ -46,7 +50,14 @@ export class Accounts implements OnInit{
 
 
   handleSearchAccount(){
-    this.accountDetailsObservable.set(this.accountService.getAccount(this.accountFormGroup.value.accountId, this.currentPage, this.size));
+
+    this.submitted.set(true);
+    this.accountDetailsObservable.set(this.accountService.getAccount(this.accountFormGroup.value.accountId, this.currentPage, this.size).pipe(
+      catchError(err => {
+        this.accountError.set(err.message);
+        return throwError(() => err);
+      })
+    ));
   }
 
   goToPage(page: number) {
@@ -96,6 +107,9 @@ export class Accounts implements OnInit{
         })
       });;
     }
+
+
+    this.operationFormGroup.reset();
   }
 
 }
